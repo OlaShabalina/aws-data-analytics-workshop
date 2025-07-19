@@ -31,29 +31,11 @@ This pattern reflects a common real-world architecture used for exploratory data
 ## Pre-Workshop Checklist
 
 - AWS account with admin or sufficient permissions
-- Access to CloudFormation, S3, Glue, and QuickSight
-- Clone this repository to your local (or fork if you want to make changes)
-
-## Getting Started
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/YOUR_USERNAME/aws-data-analytics-workshop.git
-cd aws-data-analytics-workshop
-```
-
-### 2. Make the deploy script executable
-
-```bash
-chmod +x deploy.sh
-```
-
-We will use the script for deplying our CloudFormation templates.
+- Access to CloudFormation, S3, Glue, and QuickSight (creating an account with QuickSight is a part of the lab, don't worry if you don't have one yet)
 
 ### 3. Structure
 
-The Lab is split into 6 steps:
+The Lab is split into 6 total steps:
 - [Preparation](./steps/step0-prerequisites/README.md)
 - [Step 1](./steps/step1-s3/README.md)
 - [Step 2](./steps/step2-athena-glue/README.md)

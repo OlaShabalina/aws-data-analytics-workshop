@@ -10,7 +10,7 @@ No Python or virtual environment is required.
 ## Prerequisites
 
 - AWS account and access keys
-- [AWS CLI installed](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- AWS CLI installed. If AWS CLI is not installed, follow [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) for your platform.
 
 To check:
 
@@ -18,18 +18,24 @@ To check:
 aws --version
 ```
 
-If it's not installed, follow [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) for your platform.
-
 ## Step-by-Step Setup
 
-### 1. Clone the workshop repo
+### 1. Clone the repo
 
 ```bash
-git clone https://https://github.com/OlaShabalina/aws-data-analytics-workshop
+git clone https://github.com/OlaShabalina/aws-data-analytics-workshop.git
 cd aws-data-analytics-workshop
 ```
 
-### 2. Configure your AWS CLI
+### 2. Make the deploy script executable
+
+```bash
+chmod +x deploy.sh
+```
+
+We will use the script for deploying our CloudFormation templates.
+
+### 3. Configure your AWS CLI
 
 Create an access key via the AWS Console:
 1. Go to IAM
