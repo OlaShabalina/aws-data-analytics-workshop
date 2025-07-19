@@ -58,16 +58,15 @@ All commands should be run from the project root:
 ./deploy.sh step1-s3
 ./deploy.sh step2-athena
 ./deploy.sh step3-databrew
-./deploy.sh step4-quicksight
 ```
 
 See instructions for
-- [Preparation](./steps/prerequisites/README.md)
+- [Preparation](./steps/step0-prerequisites/README.md)
 - [Step 1](./steps/step1-s3/README.md)
 - [Step 2](./steps/step2-athena-glue/README.md)
 - [Step 3](./steps/step3-databrew/README.md)
 - [Step 4](./steps/step4-quicksight/README.md)
-- [Clean-up](./steps/cleanup/README.md)
+- [Clean-up](./steps/step5-cleanup/README.md)
 
 ---
 
