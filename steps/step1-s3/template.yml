@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates a uniquely named S3 bucket for movie data using account ID and region
+Description: Step 1 - Uniquely named S3 bucket for movie data using account ID and region
 
 Resources:
   WorkshopS3Bucket:

@@ -8,7 +8,7 @@
 
 1. Go to the [QuickSight Console](https://quicksight.aws.amazon.com)
 2. Click **“Sign up for QuickSight”**
-3. Choose the **Standard or Enterprise edition** (you can start with a free trial)
+3. Choose the **Standard or Enterprise edition** (you can start with a 30 days free trial)
 4. Enter your preferred **notification email**
 5. Under **QuickSight account name**, enter: `movie-insights`
 6. Select your region (e.g., **Asia Pacific (Sydney)** / `ap-southeast-2`)
@@ -20,34 +20,25 @@
 
 ## 2. Connect to the Cleaned S3 Data in QuickSight!
 
-Your cleaned CSV output from the DataBrew job lives at a path like:
+> ⚠️ You can deploy some QuickSight resources via CloudFormation, but support is limited. For now, we'll configure the resources manually.
 
-```bash
-s3://movie-data-bucket-<account-id>-ap-southeast-2/clean/movies/*
-```
+For the S3 connector, QuickSight uses a manifest file to locate your data and understand how to interpret it. You’ll need to prepare this file first.
+In the `step4-quicksight` folder, there is a file named `quicksight-movie-manifest.json`. Replace <account-id> with your actual AWS account ID. Once updated, the manifest file will be ready for use.
 
-> ⚠️ CloudFormation is limited
-> You can deploy some QuickSight resources via CloudFormation, but support is limited. For now, we'll configure the dataset manually.
-
-Before we follow the steps, we need to prepare the Manifest File. QuickSight uses a manifest file to understand where to find your data and how to interpret it.
-In the `step4-quicksight` folder you see a file `quicksight-movie-manifest.json`. Replace <account-id> with your actual AWS account ID. Now the manifest file is ready to be used.
-
-1. In the QuickSight console, go to Datasets
-👉 [QuickSight Datasets Console](https://ap-southeast-2.quicksight.aws.amazon.com/sn/start/data-sets)
-2. Click New dataset
-3. Choose S3 as the source
-4. Enter a name: CleanedMoviesData (or any other name you like for your source)
-5. Under Manifest file path, select from URL to Upload option
+Let's connect to S3:
+1. In the QuickSight console, go to [Datasets](https://ap-southeast-2.quicksight.aws.amazon.com/sn/start/data-sets)
+2. Create a new dataset
+3. Choose S3 as a source
+4. Enter a name: `CleanedMoviesData` (or any other name you like for your source)
+5. Under Manifest file path, change from URL to Upload option
 6. Select the manifest file we just updated.
-7. Click on Visualize to start building.
+7. Once uploaded - click on `Visualize` to start building.
 
 <img width="607" height="308" alt="Screenshot 2025-07-19 at 2 01 17 pm" src="https://github.com/user-attachments/assets/d21941b4-69e0-46ec-962a-f109926fed94" />
 
 ## 3. Build Your Dashboard in QuickSight
 
 Once your dataset is imported and loaded, it's time to explore and visualise your data!
-
-### Suggested Visuals to Try
 
 Here are a few ideas for charts and insights you can build:
 

@@ -17,6 +17,8 @@ From the **project root**, run:
 ./deploy.sh step3-databrew
 ```
 
+See the CF Template for this step [here](./template.yml).
+
 This will:
 
 -  Create a DataBrew dataset linked to your movie data in S3
@@ -43,8 +45,10 @@ Once open, you'll be able to:
 If you notice, we already have a recipe attached to the data with some transformations.
 Let's try to update the recipe via the UI to see how the data changes. Your tasks:
 
-1. Change date format for `release_date` from DD/MM/YYYY to YYYY-MM-DD
+1. Change format for `release_date` to date
 2. Convert `popularity` field to appropriate numeric data type and reduce number of decimal after `.` to 2.
+
+Make sure to publish your updates in Recipe.
 
 ## 3. Run the DataBrew job to apply transformations
 
@@ -75,10 +79,10 @@ Using watch (not installed on MacOS, need to run `brew install watch` before run
 watch -n 10 "aws databrew list-job-runs --name movies-clean-job --query 'JobRuns[0].State'"
 ```
 
-Confirm the cleaned data is now in:
+Confirm the cleaned data is now in `s3://movie-data-bucket-<account-id>-<region>/clean/movies/*` via S3 Console. Or by running:
 
 ```bash
-s3://movie-data-bucket-<account-id>-<region>/clean/movies/*
+aws s3 ls s3://<your-bucket-name>/clean/movies/
 ```
 
 [Continue to Step 4 - Create a QuickSight Dashboard](../step4-quicksight/README.md)

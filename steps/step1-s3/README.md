@@ -4,6 +4,8 @@
 - Creates a personal S3 bucket for you
 - You'll upload a small movie metadata file to this bucket
 
+See the CF Template for this step [here](./template.yml).
+
 ### 1. Deploy the S3 stack:
 From the project root folder, run:
 
@@ -35,6 +37,15 @@ aws s3 cp data/movies_metadata.csv \
   s3://<your-bucket-name>/raw/movies/
 ```
 
+Example:
+
+```bash
+aws s3 cp data/movies_metadata.csv \
+  s3://movie-data-bucket-123456789012-ap-southeast-2/raw/movies/
+```
+
+> 💡 Using an object key like raw/movies/movies_metadata.csv instead of uploading directly to the bucket root helps organise data into logical "folders" making it easier to manage, automate, and query in tools like AWS Glue or Athena. It also supports better permission control and aligns with best practices for building scalable data pipelines.
+
 #### Option B: Upload via AWS Console
 
 1. Go to your Amazon S3 and locate the bucekt.
@@ -44,18 +55,24 @@ aws s3 cp data/movies_metadata.csv \
 
 ### 3. Check the file is in the bucket
 
-#### Option A: Check via AWS Console
-
-1. Go to your Amazon S3 and locate your bucket.
-2. Navigate to the `raw/movies/` folder.
-3. Confirm that `movies_metadata.csv` appears in the list of files.
-
-#### Option B: Check via AWS CLI
+#### Option A: Check via AWS CLI
 
 ```bash
 aws s3 ls s3://<your-bucket-name>/raw/movies/
 ```
 
+Example:
+
+```bash
+aws s3 ls s3://movie-data-bucket-123456789012-ap-southeast-2/raw/movies/
+```
+
 You should see `movies_metadata.csv` listed in the output.
+
+#### Option B: Check via AWS Console
+
+1. Go to your Amazon S3 and locate your bucket.
+2. Navigate to the `raw/movies/` folder.
+3. Confirm that `movies_metadata.csv` appears in the list of files.
 
 [Continue to Step 2 - Set Up Glue Crawler and Query with Athena](../step2-athena-glue/README.md)

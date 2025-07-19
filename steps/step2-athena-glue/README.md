@@ -1,13 +1,13 @@
 # Step 2: Set Up Glue Crawler and Query with Athena
 
-> An **AWS Glue Crawler** is a service that:
+> 💡 An **AWS Glue Crawler** is a service that:
 > - Scans files in your S3 bucket (like CSVs, JSON, or Parquet)
 > - Infers the data structure (columns, types, formats)
 > - Creates or updates a table in the Glue Data Catalog
 >
 > Once the crawler runs, your S3 data becomes queryable in **Athena** using standard SQL.
 >
-> 💡 Think of it as: _"A smart scanner that turns files in S3 into database tables you can query with SQL."_
+> Think of it as: _"A smart scanner that turns files in S3 into database tables you can query with SQL."_
 
 In this step, you'll:
 - Deploy a Glue Database and Crawler
@@ -22,6 +22,8 @@ From the **project root**, run:
 ./deploy.sh step2-athena-glue
 ```
 
+See the CF Template for this step [here](./template.yml).
+
 This will:
 - Create a Glue Database called movies-workshop-db
 - Create a crawler named movies-csv-crawler
@@ -31,7 +33,15 @@ This will:
 
 Once your crawler is created, you need to run it to scan your movie data and register the table.
 
-### Option A: Glue Console
+### Option A: AWS CLI
+
+Run the crawler from your terminal:
+
+```bash
+aws glue start-crawler --name movies-csv-crawler
+```
+
+### Option B: Glue Console
 
 1. Go to [AWS Glue Console → Crawlers](https://console.aws.amazon.com/glue/home?region=ap-southeast-2#/v2/data-catalog/crawlers)
 2. In the left menu, click **Crawlers**
@@ -41,16 +51,7 @@ Once your crawler is created, you need to run it to scan your movie data and reg
 
 This will scan the files in your S3 bucket at `raw/movies/` and create a table in the Glue Data Catalog.
 
-### Option B: AWS CLI
-
-Run the crawler from your terminal:
-
-```bash
-aws glue start-crawler --name movies-csv-crawler
-```
-
 The crawler takes some time to complete. You can check the status in a few ways:
-
 1. Check in the AWS Console
 2. Manual polling
 
@@ -70,7 +71,7 @@ watch -n 5 "aws glue get-crawler --name movies-csv-crawler --query 'Crawler.Stat
 
 ## 🔎 3. Explore the Data with Athena
 
-> **Amazon Athena** is a serverless SQL query engine that lets you analyze data directly in Amazon S3 using standard SQL — no need to move the data or manage servers.
+> **Amazon Athena** is a serverless SQL query engine that lets you analyse data directly in Amazon S3 using standard SQL — no need to move the data or manage servers.
 >
 > You can:
 > - Run ad-hoc queries on large datasets
@@ -112,21 +113,21 @@ LIMIT 10;
 
 ```sql
 SELECT
-  SUBSTR(release_date, 1, 4) AS release_year,
+  REGEXP_EXTRACT(release_date, '([0-9]{4})$') AS release_year,
   COUNT(*) AS movie_count
 FROM "movies-workshop-db"."movies"
 WHERE release_date IS NOT NULL
   AND release_date != ''
-  AND REGEXP_LIKE(release_date, '^[0-9]{4}')
-GROUP BY SUBSTR(release_date, 1, 4)
-ORDER BY release_year;
+  AND REGEXP_LIKE(release_date, '[0-9]{4}$')
+  AND CAST(REGEXP_EXTRACT(release_date, '([0-9]{4})$') AS INTEGER) <= 2025
+GROUP BY REGEXP_EXTRACT(release_date, '([0-9]{4})$')
+ORDER BY release_year DESC;
 ```
 
 ### Option B: Athena CLI
 You can also run queries programmatically using the AWS CLI or Boto3.
 
-📦 Output Location
-Just like in the console, you can use your custom bucket that was deployed in this step with a prefix: `s3://athena-query-results-<your-account-id>-<region>/query-results/`
+**Output Location:** Just like in the console, you can use your custom bucket that was deployed in this step with a prefix: `s3://athena-query-results-<your-account-id>-<region>/query-results/`
 
 1. Run a Query
 
@@ -134,7 +135,7 @@ Just like in the console, you can use your custom bucket that was deployed in th
 aws athena start-query-execution \
   --query-string "SELECT title, release_date FROM \"movies-workshop-db\".\"movies\" LIMIT 5;" \
   --query-execution-context Database=movies-workshop-db \
-  --result-configuration OutputLocation=<your_output_s3_location>
+  --result-configuration OutputLocation=s3://athena-query-results-<your-account-id>-ap-southeast-2/query-results/
 ```
 
 It should return something like this:

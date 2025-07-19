@@ -2,7 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Step 2 - Glue Crawler and Database to enable querying via Athena
 
 Resources:
-
   GlueCrawlerRole:
     Type: AWS::IAM::Role
     Properties:
