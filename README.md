@@ -43,6 +43,8 @@ The Lab is split into 6 total steps:
 - [Step 4](./steps/step4-quicksight/README.md)
 - [Clean-up](./steps/step5-cleanup/README.md)
 
+For the best experience, view the instructions on GitHub in your browser, and run the commands from the root directory of your cloned repository.
+
 👉 Start your workshop from [here](./steps/step0-prerequisites/README.md)
 
 ---

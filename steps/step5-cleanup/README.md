@@ -17,7 +17,11 @@ To close your QuickSight account:
 
 💡 _Note: This deletes **only the QuickSight account**, not your AWS account or any S3 buckets._
 
-## 2. Run the Cleanup Script
+## 2. Manually delete your recipe
+
+Unfortunately, you cannot delete the LATEST_WORKING version of a recipe via the CLI. Please go to the [DataBrew Recipes Console](https://ap-southeast-2.console.aws.amazon.com/databrew/home?region=ap-southeast-2#recipes) and delete the "workshop-recipe" manually.
+
+## 3. Run the Cleanup Script
 
 This will delete all deployed CloudFormation stacks and empty the S3 buckets.
 
@@ -31,9 +35,9 @@ This will:
 - Empty the `movie-data-bucket` and `athena-query-results` S3 buckets
 - Delete the following stacks:
   - step3-databrew
-  - step2-glue
+  - step2-athena-glue
   - step1-s3
 
-3. Troubleshooting Cleanup Failures
+### Troubleshooting Cleanup Failures
 
-If any of the stacks failed to delete - go to Cloud Formation Console and investigate the error.
+If any of the stacks failed to delete - go to Cloud Formation Console and investigate.

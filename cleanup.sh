@@ -11,7 +11,7 @@ BUCKET_MOVIE="movie-data-bucket-${ACCOUNT_ID}-${REGION}"
 
 STACKS=(
   "step3-databrew"
-  "step2-glue"
+  "step2-athena-glue"
   "step1-s3"
 )
 
