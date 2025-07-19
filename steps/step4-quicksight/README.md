@@ -4,7 +4,7 @@
 >
 > 💡 Think of it as: _“Excel meets Tableau — but native to AWS and serverless.”_
 
-## 🧭 1. Set Up Your QuickSight Account
+## 1. Set Up Your QuickSight Account
 
 1. Go to the [QuickSight Console](https://quicksight.aws.amazon.com)
 2. Click **“Sign up for QuickSight”**
@@ -18,7 +18,7 @@
 
 ⏳ **Wait 2–5 minutes** for your account to be provisioned.
 
-## 📂 2. Connect to the Cleaned S3 Data in QuickSight!
+## 2. Connect to the Cleaned S3 Data in QuickSight!
 
 Your cleaned CSV output from the DataBrew job lives at a path like:
 
@@ -47,8 +47,6 @@ In the `step4-quicksight` folder you see a file `quicksight-movie-manifest.json`
 
 Once your dataset is imported and loaded, it's time to explore and visualise your data!
 
-> 💡 Think of this like creating your own mini IMDb analytics dashboard.
-
 ### Suggested Visuals to Try
 
 Here are a few ideas for charts and insights you can build:
@@ -59,7 +57,7 @@ Here are a few ideas for charts and insights you can build:
 - **X-axis**: `genre`
 - **Value**: `none` (picks count of records)
 
-> 💡 This helps you see which genres appear most frequently in your dataset.
+This helps you see which genres appear most frequently in your dataset.
 
 #### Top Spoken Languages
 
@@ -68,7 +66,7 @@ Here are a few ideas for charts and insights you can build:
 - **Value**: `none` (picks count of records)
 - **Filter**: Pick the most common languages
 
-> 💡 Identify which languages dominate the movie dataset.
+Identify which languages dominate the movie dataset.
 
 #### Average Popularity by Genre
 
@@ -76,7 +74,7 @@ Here are a few ideas for charts and insights you can build:
 - **Group by**: `genre`
 - **Metric**: `avg(popularity)` (be careful, defaults to Sum)
 
-> 💡 Helps surface which genres trend as the most "popular" overall.
+Helps surface which genres trend as the most "popular" overall.
 
 ### Save Your Dashboard
 
@@ -84,5 +82,4 @@ Once your visuals are created:
 
 1. Click "Publish"
 2. Name it: Movie Insights Dashboard
-
-> 💡 After publishing, you can even **share dashboards** with teammates or export them as PDFs.
+3. After publishing, you can even **share dashboards** with teammates or export them as PDFs.
