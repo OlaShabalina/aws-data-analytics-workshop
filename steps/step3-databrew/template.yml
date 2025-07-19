@@ -1,0 +1,144 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Step 3 - DataBrew project using Glue Data Catalog and scoped S3 access
+
+Resources:
+  DataBrewRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: movie-databrew-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: databrew.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ScopedAccessForDataBrew
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource: !Sub "arn:aws:s3:::movie-data-bucket-${AWS::AccountId}-${AWS::Region}"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource: !Sub "arn:aws:s3:::movie-data-bucket-${AWS::AccountId}-${AWS::Region}/*"
+              - Effect: Allow
+                Action:
+                  - glue:GetDatabase
+                  - glue:GetTable
+                  - glue:GetPartitions
+                Resource:
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/movies-workshop-db"
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/movies-workshop-db/movies"
+
+  DataBrewDataset:
+    Type: AWS::DataBrew::Dataset
+    Properties:
+      Name: movies-dataset
+      Input:
+        DataCatalogInputDefinition:
+          DatabaseName: movies-workshop-db
+          TableName: movies
+
+  DataBrewProject:
+    Type: AWS::DataBrew::Project
+    Properties:
+      Name: !Sub "databrew-project"
+      DatasetName: !Ref DataBrewDataset
+      RoleArn: !GetAtt DataBrewRole.Arn
+      RecipeName: !Ref DataBrewRecipe
+      Sample:
+        Type: FIRST_N
+        Size: 500
+
+  DataBrewRecipe:
+    Type: AWS::DataBrew::Recipe
+    Properties:
+      Name: workshop-recipe
+      Description: Recipe for normalizing genres and spoken_languages
+      Steps:
+        - Action:
+            Operation: SPLIT_COLUMN_SINGLE_DELIMITER
+            Parameters:
+              sourceColumn: genres
+              pattern: '; '
+              limit: '6'
+              isText: 'TRUE'
+              includeInSplit: 'true'
+        - Action:
+            Operation: UNPIVOT
+            Parameters:
+              sourceColumns: '["genres_1","genres_2","genres_3","genres_4","genres_5","genres_6","genres_7"]'
+              unpivotColumn: genre_index
+              valueColumn: genre
+        - Action:
+            Operation: DELETE
+            Parameters:
+              sourceColumns: '["genre_index"]'
+        - Action:
+            Operation: REMOVE_MISSING
+            Parameters:
+              sourceColumn: genre
+        - Action:
+            Operation: SPLIT_COLUMN_SINGLE_DELIMITER
+            Parameters:
+              sourceColumn: spoken_languages
+              pattern: '; '
+              limit: '4'
+              isText: 'TRUE'
+              includeInSplit: 'true'
+        - Action:
+            Operation: UNPIVOT
+            Parameters:
+              sourceColumns: >-
+                ["spoken_languages_1","spoken_languages_2","spoken_languages_3","spoken_languages_4","spoken_languages_5"]
+              unpivotColumn: lang_index
+              valueColumn: spoken_languages
+        - Action:
+            Operation: DELETE
+            Parameters:
+              sourceColumns: '["lang_index"]'
+        - Action:
+            Operation: REMOVE_MISSING
+            Parameters:
+              sourceColumn: spoken_languages
+
+  DataBrewJob:
+    Type: AWS::DataBrew::Job
+    DependsOn:
+      - DataBrewProject
+      - DataBrewRole
+    Properties:
+      Name: movies-clean-job
+      Type: RECIPE
+      ProjectName: !Ref DataBrewProject
+      RoleArn: !GetAtt DataBrewRole.Arn
+      Outputs:
+        - Location:
+            Bucket: !Sub "movie-data-bucket-${AWS::AccountId}-${AWS::Region}"
+            Key: "clean/movies/"
+            BucketOwner: !Ref AWS::AccountId
+          Format: CSV
+          FormatOptions:
+            Csv:
+              Delimiter: ","
+
+Outputs:
+  ProjectName:
+    Value: !Ref DataBrewProject
+    Description: The name of the DataBrew project
+
+  DatasetName:
+    Value: !Ref DataBrewDataset
+    Description: The name of the DataBrew dataset
+
+  DataBrewRoleArn:
+    Value: !GetAtt DataBrewRole.Arn
+    Description: IAM Role used by DataBrew

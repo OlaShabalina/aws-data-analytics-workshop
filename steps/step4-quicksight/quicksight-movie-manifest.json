@@ -1,0 +1,15 @@
+{
+  "fileLocations": [
+    {
+      "URIPrefixes": [
+        "s3://movie-data-bucket-<account-id>-ap-southeast-2/clean/movies/"
+      ]
+    }
+  ],
+  "globalUploadSettings": {
+    "format": "CSV",
+    "delimiter": ",",
+    "textqualifier": "\"",
+    "containsHeader": "true"
+  }
+}

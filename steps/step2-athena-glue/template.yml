@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Step 2 - Glue Crawler and Database to enable querying via Athena
+
+Resources:
+
+  GlueCrawlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "glue-crawler-role-${AWS::AccountId}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+      Policies:
+        - PolicyName: GlueS3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource: "*"
+
+  GlueDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: movies-workshop-db
+
+  GlueCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: movies-csv-crawler
+      Role: !GetAtt GlueCrawlerRole.Arn
+      DatabaseName: !Ref GlueDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://movie-data-bucket-${AWS::AccountId}-${AWS::Region}/raw/movies/"
+      TablePrefix: ""
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: DEPRECATE_IN_DATABASE
+      RecrawlPolicy:
+        RecrawlBehavior: CRAWL_EVERYTHING
+
+  # You have to have an output bucket for Athena query results
+  AthenaResultsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "athena-query-results-${AWS::AccountId}-${AWS::Region}"
+
+Outputs:
+  GlueDatabaseName:
+    Description: "Glue database name"
+    Value: !Ref GlueDatabase
+  GlueCrawlerName:
+    Description: "Crawler name"
+    Value: !Ref GlueCrawler
+  AthenaResultsBucketName:
+    Description: "Bucket for Athena query results"
+    Value: !Ref AthenaResultsBucket
