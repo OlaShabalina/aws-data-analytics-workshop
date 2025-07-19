@@ -1,4 +1,4 @@
-# Step 4: Create a QuickSight Account
+# Step 4: Create a QuickSight Dashboard
 
 > **Amazon QuickSight** is a cloud-native business intelligence tool that lets you build interactive dashboards directly from AWS data sources like S3, Athena, or Redshift.
 >
@@ -83,3 +83,7 @@ Once your visuals are created:
 1. Click "Publish"
 2. Name it: Movie Insights Dashboard
 3. After publishing, you can even **share dashboards** with teammates or export them as PDFs.
+
+The workshop is complete — congratulations! You’ve successfully built a data analytics pipeline! 🚀
+
+[Continue to Step 5 - Cleanup](../step5-cleanup/README.md)

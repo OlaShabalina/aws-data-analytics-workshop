@@ -4,7 +4,7 @@
 - Creates a personal S3 bucket for you
 - You'll upload a small movie metadata file to this bucket
 
-### Deploy the S3 stack:
+### 1. Deploy the S3 stack:
 From the project root folder, run:
 
 ```bash
@@ -24,7 +24,7 @@ aws cloudformation describe-stacks \
 
 Press on `q` to exit the view.
 
-### Upload the dataset to the bucket
+### 2. Upload the dataset to the bucket
 
 In real life scenario the file is being dropped to the bucket by another system. But for the demo purpose we drop it ourselves.
 
@@ -41,3 +41,21 @@ aws s3 cp data/movies_metadata.csv \
 2. Click Upload
 3. Create or choose a folder path: raw/movies/
 4. Upload [the file](../../data/movies_metadata.csv) from this repository.
+
+### 3. Check the file is in the bucket
+
+#### Option A: Check via AWS Console
+
+1. Go to your Amazon S3 and locate your bucket.
+2. Navigate to the `raw/movies/` folder.
+3. Confirm that `movies_metadata.csv` appears in the list of files.
+
+#### Option B: Check via AWS CLI
+
+```bash
+aws s3 ls s3://<your-bucket-name>/raw/movies/
+```
+
+You should see `movies_metadata.csv` listed in the output.
+
+[Continue to Step 2 - Set Up Glue Crawler and Query with Athena](../step2-athena-glue/README.md)

@@ -152,3 +152,5 @@ It should return something like this:
 aws athena get-query-results \
   --query-execution-id <your-query-execution-id>
 ```
+
+[Continue to Step 3 - Clean and Transform with AWS Glue DataBrew](../step3-databrew/README.md)

@@ -60,3 +60,5 @@ aws sts get-caller-identity
 ```
 
 You should see your AWS account ID and user.
+
+[Continue to Step 1 - Create Your S3 Bucket and Upload Movie Data](../step1-s3/README.md)

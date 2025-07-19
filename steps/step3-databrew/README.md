@@ -80,3 +80,5 @@ Confirm the cleaned data is now in:
 ```bash
 s3://movie-data-bucket-<account-id>-<region>/clean/movies/*
 ```
+
+[Continue to Step 4 - Create a QuickSight Dashboard](../step4-quicksight/README.md)
