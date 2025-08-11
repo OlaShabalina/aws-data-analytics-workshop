@@ -7,18 +7,21 @@ This step will set up your local environment with:
 
 No Python or virtual environment is required.
 
-## Prerequisites
+## Options
 
-- AWS account and access keys
-- AWS CLI installed. If AWS CLI is not installed, follow [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) for your platform.
+1. Github Codespaces (recommended)
+2. Local Setup
 
-To check:
+## Github Codespaces
 
-```bash
-aws --version
-```
+- Fork the repo
+- Go to Code -> Codespaces -> Create codespace on main
+- Wait for setup to complete
+- Proceed to [step 4: Configure your AWS CLI](#4-configure-your-aws-cli)
 
-## Step-by-Step Setup
+<img width="916" height="516" alt="Image" src="https://github.com/user-attachments/assets/de08e5b9-1326-4616-a7b1-6cc6d6d213de" />
+
+## Step-by-Step Local Setup
 
 ### 1. Clone the repo
 
@@ -35,7 +38,17 @@ chmod +x deploy.sh
 
 We will use the script for deploying our CloudFormation templates.
 
-### 3. Configure your AWS CLI
+### 3. Install AWS CLI & check
+
+If AWS CLI is not installed, follow [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html) for your platform.
+
+To check:
+
+```bash
+aws --version
+```
+
+### 4. Configure your AWS CLI
 
 Create an access key via the AWS Console:
 1. Go to IAM
