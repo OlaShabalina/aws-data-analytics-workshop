@@ -1,0 +1,11 @@
+# AWS CLI install leftovers
+aws/
+awscliv2.zip
+
+# Devcontainer build/test artifacts
+.devcontainer/*.log
+.devcontainer/*.tmp
+
+# OS/system files
+.DS_Store
+Thumbs.db
